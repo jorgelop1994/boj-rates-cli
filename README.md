@@ -21,6 +21,7 @@ A simple shell script to fetch the exchange rates from the Bank of Jamaica (BOJ)
    ```bash
    git clone https://github.com/yourusername/boj-exchange-rates-scraper.git
    cd boj-exchange-rates-scraper
+   bash fetch_boj_rates.sh
 
 ## Disclaimer
 
