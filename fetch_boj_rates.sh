@@ -6,7 +6,7 @@ set -euo pipefail  # Exit immediately on error, treat unset variables as an erro
 URL="https://boj.org.jm/market/foreign-exchange/indicative-rates/"
 TOKEN_FILE="/tmp/token.txt"  # Temporary file to store the token
 CURL_URL="https://boj.org.jm/wp-admin/admin-ajax.php?action=get_wdtable&table_id=135"
-OUTPUT_FILE="/var/www/rc/web/jsonfxjmd.json"  # Output file
+OUTPUT_FILE="bojfxrates.json"  # Output file
 
 # Function to log messages
 log() {
