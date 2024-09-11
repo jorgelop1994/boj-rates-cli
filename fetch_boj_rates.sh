@@ -37,7 +37,7 @@ perform_request() {
     local token="$1"
     
     log "Performing request with token: $token"
-    response=$(curl -s -o "$OUTPUT_FILE" -w "%{http_code}" -X POST "$CURL_URL" \
+    response=$(curl -s -w "%{http_code}" -X POST "$CURL_URL" \
       -H "accept: application/json, text/javascript, */*; q=0.01" \
       -H "accept-language: en-US,en;q=0.8" \
       -H "content-type: application/x-www-form-urlencoded; charset=UTF-8" \
@@ -52,13 +52,15 @@ perform_request() {
       -H "sec-gpc: 1" \
       -H "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" \
       -H "x-requested-with: XMLHttpRequest" \
-      --data "action=get_wdtable&table_id=135&draw=2&columns[0][data]=0&columns[0][name]=date&columns[0][searchable]=true&columns[0][orderable]=true&columns[0][search][value]=%7C&columns[0][search][regex]=false&columns[1][data]=1&columns[1][name]=currency&columns[1][searchable]=true&columns[1][orderable]=true&columns[1][search][value]=U.S.%20DOLLAR&columns[1][search][regex]=true&columns[2][data]=2&columns[2][name]=buying&columns[2][searchable]=false&columns[2][orderable]=false&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=3&columns[3][name]=selling&columns[3][searchable]=true&columns[3][orderable]=false&columns[3][search][value]=&columns[3][search][regex]=false&order[0][column]=0&order[0][dir]=desc&start=0&length=25&search[value]=&search[regex]=false&wdtNonce=$token&sRangeSeparator=%7C")
-    
-    if [ "$response" -eq 200 ]; then
+      --data "action=get_wdtable&table_id=135&draw=2&columns[0][data]=0&columns[0][name]=date&columns[0][searchable]=true&columns[0][orderable]=true&columns[0][search][value]=%7C&columns[0][search][regex]=false&columns[1][data]=1&columns[1][name]=currency&columns[1][searchable]=true&columns[1][orderable]=true&columns[1][search][value]=U.S.%20DOLLAR&columns[1][search][regex]=true&columns[2][data]=2&columns[2][name]=buying&columns[2][searchable]=false&columns[2][orderable]=false&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=3&columns[3][name]=selling&columns[3][searchable]=true&columns[3][orderable]=false&columns[3][search][value]=&columns[3][search][regex]=false&order[0][column]=0&order[0][dir]=desc&start=0&length=25&search[value]=&search[regex]=false&wdtNonce=$token&sRangeSeparator=%7C" \
+      -o "$OUTPUT_FILE")
+
+    # Check if the request was successful and the output file is not empty
+    if [ "$response" -eq 200 ] && [ -s "$OUTPUT_FILE" ]; then
         log "Request successful. Output saved to: $OUTPUT_FILE"
         return 0
     else
-        log "Request failed with status code: $response"
+        log "Request failed with status code: $response or empty output file."
         return 1
     fi
 }
